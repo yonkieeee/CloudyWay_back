@@ -1,4 +1,4 @@
 package org.example.userservice.dto;
 
-public class MailBody {
+public record MailBody(String to, String subject, String text) {
 }

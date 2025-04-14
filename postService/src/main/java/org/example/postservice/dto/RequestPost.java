@@ -1,4 +1,6 @@
 package org.example.postservice.dto;
 
-public class RequestPost {
+import org.springframework.web.multipart.MultipartFile;
+
+public record RequestPost(MultipartFile file, String description, String coordinates) {
 }
