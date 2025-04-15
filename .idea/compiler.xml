@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="postService" />
         <module name="user-service" />
       </profile>
       <profile name="Annotation profile for placesService" enabled="true">
@@ -28,6 +29,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="hereApiService" options="-parameters" />
       <module name="placesService" options="-parameters" />
+      <module name="postService" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
