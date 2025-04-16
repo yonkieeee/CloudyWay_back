@@ -4,6 +4,7 @@ import org.example.postservice.repositories.PostRepo;
 import org.example.postservice.dto.RequestPost;
 import org.example.postservice.models.Post;
 import org.example.postservice.services.S3Service;
+import org.example.postservice.services.UserChangesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class PostController {
     private final S3Service s3Service;
     private final PostRepo postRepo;
+
+    @Autowired
+    private UserChangesService userChangesService;
 
     @Autowired
     public PostController(S3Service s3Service, PostRepo postRepo) {
@@ -36,19 +40,20 @@ public class PostController {
 
             var putPhoto = s3Service.PutObject(key, requestPost.file());
 
-
             post.setUid(uid);
             post.setImageUrl(putPhoto);
             post.setCoordinates(requestPost.coordinates());
+            post.setPlaceId(requestPost.placeID());
             post.setUid(UUID.randomUUID().toString());
             post.setDescription(requestPost.description());
 
             postRepo.addPost(uid, post);
+            userChangesService.addPost(uid);
 
             return ResponseEntity.ok().body(putPhoto);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

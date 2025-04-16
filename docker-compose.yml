@@ -1,0 +1,29 @@
+services:
+  user_api:
+    container_name: "auth_api"
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    ports:
+      - "8080:8080"
+  post_api:
+    container_name: "post_api"
+    build:
+      context: .
+      dockerfile: postService/Dockerfile
+    ports:
+      - "8081:8081"
+  here_api:
+    container_name: "here_api"
+    build:
+      context: .
+      dockerfile: hereApiService/Dockerfile
+    ports:
+      - "5000:5000"
+  places_api:
+    container_name: "places_api"
+    build:
+      context: .
+      dockerfile: placesService/Dockerfile
+    ports:
+      - "5001:5001"
