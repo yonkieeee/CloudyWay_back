@@ -4,9 +4,9 @@ RUN apt-get update && apt-get install -y maven
 
 WORKDIR /authUser
 
-COPY authUser/pom.xml /authUser/
+COPY user-service/pom.xml /authUser/
 
-COPY authUser/src /authUser/src
+COPY user-service/src /authUser/src
 
 RUN mvn clean package -DskipTests
 
