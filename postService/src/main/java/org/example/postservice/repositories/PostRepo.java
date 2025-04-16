@@ -43,6 +43,7 @@ public class PostRepo {
 
         for(QueryDocumentSnapshot document : documents) {
             Post post = document.toObject(Post.class);
+            posts.add(post);
         }
 
         return Optional.of(posts);

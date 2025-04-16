@@ -11,7 +11,7 @@ public class UserChangesService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public void addPost(String uid){
-        String url = "http://localhost:8080/profile";
+        String url = "http://13.61.152.244:8080/profile";
 
         var user = restTemplate.getForObject(url + "?uid=" + uid, Map.class);
 
