@@ -3,7 +3,7 @@ services:
     container_name: "auth_api"
     build:
       context: .
-      dockerfile: authUser/Dockerfile
+      dockerfile: user-service/Dockerfile
     ports:
       - "8080:8080"
   post_api:
