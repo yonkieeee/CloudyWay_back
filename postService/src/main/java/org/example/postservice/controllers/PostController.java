@@ -43,6 +43,7 @@ public class PostController {
             post.setUid(uid);
             post.setImageUrl(putPhoto);
             post.setCoordinates(requestPost.coordinates());
+            post.setPlaceId(requestPost.placeID());
             post.setUid(UUID.randomUUID().toString());
             post.setDescription(requestPost.description());
 

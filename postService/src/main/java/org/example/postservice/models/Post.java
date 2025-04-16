@@ -11,12 +11,16 @@ public class Post {
     @DocumentId
     private String postID;
 
+    private String placeId;
     private String imageUrl;
     private String coordinates;
     private String description;
 
     @Builder.Default
     private Integer likes = 0;
+
+    @Builder.Default
+    private Integer comments = 0;
 
     private String uid;
 }
