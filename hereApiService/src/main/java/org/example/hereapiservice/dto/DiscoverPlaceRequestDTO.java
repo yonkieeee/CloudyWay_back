@@ -1,4 +1,4 @@
-package org.example.hereapiservice.schemas;
+package org.example.hereapiservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,4 @@ import lombok.NoArgsConstructor;
 public class DiscoverPlaceRequestDTO {
     @JsonProperty("placeName")
     private String placeName;
-
-    @JsonProperty("languageCode")
-    private String languageCode;
-
 }

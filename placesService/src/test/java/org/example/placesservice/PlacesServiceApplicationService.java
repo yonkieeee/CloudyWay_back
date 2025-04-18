@@ -9,7 +9,11 @@ import org.springframework.test.context.TestPropertySource;
         "spring.datasource.url=jdbc:postgresql://localhost:5432/test_db_placeholder",
         "spring.datasource.username=test_user_placeholder",
         "spring.datasource.password=test_password_placeholder",
-        "spring.liquibase.enabled=false"
+        "spring.liquibase.enabled=false",
+        "opensearch.host=test_host",
+        "opensearch.port=443",
+        "opensearch.username=test_username",
+        "opensearch.password=test_password"
 })
 class PlacesServiceApplicationTests {
 

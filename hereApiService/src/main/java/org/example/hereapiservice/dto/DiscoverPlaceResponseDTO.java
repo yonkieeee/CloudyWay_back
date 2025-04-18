@@ -1,4 +1,4 @@
-package org.example.hereapiservice.schemas;
+package org.example.hereapiservice.dto;
 
 import java.util.Map;
 
