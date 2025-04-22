@@ -1,9 +1,10 @@
 package org.example.hereapiservice.controllers;
 
-import org.example.hereapiservice.schemas.*;
+import org.example.hereapiservice.dto.*;
 import org.example.hereapiservice.services.HereApiService;
 import org.example.hereapiservice.services.TranslateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,31 +18,26 @@ public class HereApiController {
 
     private final HereApiService service;
     private final ObjectMapper objectMapper;
-    private final TranslateService translateService;
 
-    public HereApiController(HereApiService service, TranslateService translateService) {
+    @Autowired
+    public HereApiController(HereApiService service) {
         this.service = service;
         this.objectMapper = new ObjectMapper();
-        this.translateService = translateService;
     }
 
     @GetMapping
-    public ResponseEntity<String> getLocation(@RequestParam String json) {
+    public ResponseEntity<List<DiscoverPlaceResponseDTO>> getLocation(@RequestParam String json) {
         try {
-            DiscoverRequestDTO request = objectMapper.readValue(json, DiscoverRequestDTO.class);
-            return service.getLocationData(request.getLatitude(), request.getLongitude(), request.getQuery());
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body("Invalid JSON format");
+            return ResponseEntity.ok(service.getLocationData(json));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/discover")
     public ResponseEntity<List<DiscoverPlaceResponseDTO>> discoverPlace(@RequestBody DiscoverPlaceRequestDTO json) {
         try {
-            String placeName = json.getPlaceName();
-            String languageCode = json.getLanguageCode();
-            String text = translateService.translate(placeName, languageCode);
-            return ResponseEntity.ok(service.discoverPlace(text));
+            return ResponseEntity.ok(service.discoverPlace(json.getPlaceName()));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

@@ -1,4 +1,4 @@
-package org.example.hereapiservice.schemas;
+package org.example.hereapiservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeocodeRequestDTO {
+public class GeocodePlaceRequestDTO {
+    @JsonProperty("placeName")
+    private String placeName;
+
     @JsonProperty("houseNumber")
     private String houseNumber;
 
@@ -17,14 +20,4 @@ public class GeocodeRequestDTO {
 
     @JsonProperty("city")
     private String city;
-
-    @JsonProperty("state")
-    private String state;
-
-    @JsonProperty("postalCode")
-    private String postalCode;
-
-    @JsonProperty("country")
-    private String country;
-
 }
