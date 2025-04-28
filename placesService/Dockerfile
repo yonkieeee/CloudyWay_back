@@ -2,16 +2,16 @@ FROM openjdk:21-slim as build
 
 RUN apt-get update && apt-get install -y maven
 
-WORKDIR /authUser
+WORKDIR /places
 
-COPY user-service/pom.xml /authUser/
+COPY placesService/pom.xml /places/
 
-COPY user-service/src /authUser/src
+COPY placesService/src /places/src
 
 RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-jammy
 
-COPY --from=build /authUser/target/*.jar app.jar
+COPY --from=build /places/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

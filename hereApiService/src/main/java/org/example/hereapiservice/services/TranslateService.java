@@ -20,10 +20,10 @@ public class TranslateService {
         this.translateClient = translateClient;
     }
 
-    public String translate(String text, String sourceLanguage) {
+    public String translate(String text) {
         TranslateTextRequest request = new TranslateTextRequest()
                 .withText(text)
-                .withSourceLanguageCode(sourceLanguage)
+                .withSourceLanguageCode("auto")
                 .withTargetLanguageCode(defaultTargetLanguage);
         TranslateTextResult result = translateClient.translateText(request);
         return result.getTranslatedText();
