@@ -28,10 +28,13 @@ public class PostController {
         this.postRepo = postRepo;
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<?> putPhoto(@RequestParam("UID") String uid,
                                       @ModelAttribute RequestPost requestPost) {
         try {
+            if(!userChangesService.checkUser(uid))
+                return ResponseEntity.status(404).body("User does not exist");
+
             Post post = new Post();
 
             String fileName = requestPost.file().getOriginalFilename();
