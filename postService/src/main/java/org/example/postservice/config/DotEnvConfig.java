@@ -16,5 +16,6 @@ public class DotEnvConfig {
         System.setProperty("FIREBASE_URL", dotenv.get("FIREBASE_URL"));
         System.setProperty("S3_ACCESS_KEY", dotenv.get("S3_ACCESS_KEY"));
         System.setProperty("S3_SECRET_KEY", dotenv.get("S3_SECRET_KEY"));
+        System.setProperty("USER_SERVICE_ID", dotenv.get("USER_SERVICE_ID"));
     }
 }

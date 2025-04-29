@@ -47,6 +47,11 @@ public class LikeRepo {
         getLikesCollection(uid, postId).document(user_id).delete().get();
     }
 
+    public boolean likeExist(String uid, String postId, String user_id)
+            throws ExecutionException, InterruptedException {
+        return getLikesCollection(uid, postId).document(user_id).get().get().exists();
+    }
+
     public List<Like> getLikes(String uid, String postId)
             throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> future = getLikesCollection(uid, postId).get();

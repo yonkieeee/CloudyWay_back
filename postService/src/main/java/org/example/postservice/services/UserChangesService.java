@@ -1,5 +1,6 @@
 package org.example.postservice.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,8 +11,11 @@ import java.util.Map;
 public class UserChangesService {
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${user.service.id}")
+    private String userServiceId;
+
     public void addPost(String uid){
-        String url = "http://51.20.126.241:8080/profile";
+        String url = userServiceId + "/profile";
 
         var user = restTemplate.getForObject(url + "?uid=" + uid, Map.class);
 
@@ -22,5 +26,13 @@ public class UserChangesService {
         changes.put("visitedPlaces", visitedPlaces + 1);
 
         restTemplate.put(url + "/change?uid=" + uid, changes);
+    }
+
+    public boolean checkUser(String uid){
+        String url = userServiceId + "/profile";
+
+        var user = restTemplate.getForObject(url + "?uid=" + uid, Map.class);
+
+        return user != null;
     }
 }

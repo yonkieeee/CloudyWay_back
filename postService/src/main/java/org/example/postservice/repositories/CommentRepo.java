@@ -1,10 +1,7 @@
 package org.example.postservice.repositories;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import org.example.postservice.models.Comment;
 import org.example.postservice.models.Like;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +34,7 @@ public class CommentRepo {
 
     public void addComment(String uid, String postId, Comment comment)
             throws ExecutionException, InterruptedException {
-        String commentId = comment.getCommentID() != null
-                ? comment.getCommentID() : UUID.randomUUID().toString();
+        String commentId = UUID.randomUUID().toString();
 
         comment.setCommentID(commentId);
 
@@ -47,9 +43,9 @@ public class CommentRepo {
                 .set(comment).get();
     }
 
-    public void removeComment(String uid, String postId, String user_id)
+    public void removeComment(String uid, String postId, String comment_id)
             throws ExecutionException, InterruptedException {
-        getCommentsCollection(uid, postId).document(user_id).delete().get();
+        getCommentsCollection(uid, postId).document(comment_id).delete().get();
     }
 
     public Optional<List<Comment>> getComments(String uid, String postId)
@@ -60,6 +56,19 @@ public class CommentRepo {
         return Optional.of(docs.stream()
                 .map(doc -> doc.toObject(Comment.class))
                 .collect(Collectors.toList()));
+    }
+
+    public Optional<Comment> getComment(String uid, String postId, String comment_id)
+            throws ExecutionException, InterruptedException {
+        ApiFuture<DocumentSnapshot> future = getCommentsCollection(uid, postId).document(comment_id).get();
+        DocumentSnapshot document = future.get();
+
+        if(document.exists()) {
+            Comment comment = document.toObject(Comment.class);
+            return Optional.of(comment);
+        }
+
+        return Optional.empty();
     }
 
     public int countCommentsForPost(String uid, String postId)
