@@ -8,6 +8,7 @@ services:
       - "8080:8080"
     environment:
       - JAVA_OPTS=-Xmx256m -Xms128m
+    restart: unless-stopped
   post_api:
     container_name: "post_api"
     build:
@@ -15,6 +16,7 @@ services:
       dockerfile: postService/Dockerfile
     ports:
       - "8081:8081"
+    restart: unless-stopped
   here_api:
     container_name: "here_api"
     build:
