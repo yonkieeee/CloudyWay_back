@@ -56,6 +56,11 @@ public class PostRepo {
         return Optional.ofNullable(snapshot.toObject(Post.class));
     }
 
+    public void changePost(String uid, Post post) throws ExecutionException, InterruptedException {
+        CollectionReference postsRef = firestore.collection("users").document(uid).collection("posts");
+        postsRef.document(post.getPostID()).set(post).get();
+    }
+
     public void deletePost(String uid, String postId) throws ExecutionException, InterruptedException {
         DocumentReference docRef = firestore.collection("users").document(uid).collection("posts").document(postId);
 
