@@ -26,7 +26,13 @@ public class User {
     private String description;
 
     @Builder.Default
-    private Integer countOfFriens = 0;
+    private Integer countOfFriends = 0;
+
+    @Builder.Default
+    private Integer countOfFollowers = 0;
+
+    @Builder.Default
+    private Integer countOfFollowing = 0;
 
     @Builder.Default
     private Integer visitedPlaces = 0;
