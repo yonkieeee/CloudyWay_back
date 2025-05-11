@@ -1,5 +1,6 @@
 package org.example.userservice.controllers;
 
+import org.example.userservice.dto.RequestProfileImage;
 import org.example.userservice.models.User;
 import org.example.userservice.repositories.UserRepository;
 import org.example.userservice.services.S3Service;
@@ -23,7 +24,7 @@ public class ProfileController {
 
     @PutMapping("/photo")
     public ResponseEntity<?> putPhoto(@RequestParam(value="uid") String uid,
-                                      @RequestParam(value="profileImage") MultipartFile file) throws IOException {
+                                      @ModelAttribute RequestProfileImage requestProfileImage) throws IOException {
         try {
             User user = userRepository.getUserBy("uid", uid).orElse(null);
 
@@ -34,11 +35,11 @@ public class ProfileController {
             if(user.getProfileImageUrl() != null){
                 s3Service.deleteObjectByUrl(user.getProfileImageUrl());
             }
-            String fileName = file.getOriginalFilename();
+            String fileName = requestProfileImage.file().getOriginalFilename();
 
             String key = "profileImage/" + uid + "/" + fileName;
 
-            var putPhoto = s3Service.PutObject(key, file);
+            var putPhoto = s3Service.PutObject(key,  requestProfileImage.file());
 
             user.setProfileImageUrl(putPhoto);
 
