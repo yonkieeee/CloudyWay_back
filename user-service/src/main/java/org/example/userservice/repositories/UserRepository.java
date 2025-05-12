@@ -43,12 +43,10 @@ public class UserRepository{
         QuerySnapshot querySnapshot = future.get();
 
         if (querySnapshot != null && !querySnapshot.isEmpty()) {
-
             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
             return Optional.ofNullable(document.toObject(User.class));
         }
-
-        return null;
+        return Optional.empty();
     }
 
     public Boolean existById(String uid)

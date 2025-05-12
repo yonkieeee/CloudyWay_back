@@ -47,7 +47,7 @@ public class ProfileController {
 
             return ResponseEntity.ok().body(putPhoto);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
