@@ -15,7 +15,6 @@ public class Post {
 
     private String placeId;
     private String imageUrl;
-    private Coordinates coordinates;
     private String description;
 
     @Builder.Default

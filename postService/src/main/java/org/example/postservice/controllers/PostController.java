@@ -71,7 +71,6 @@ public class PostController {
 
             post.setUid(uid);
             post.setImageUrl(putPhoto);
-            post.setCoordinates(coordinates);
             post.setPlaceId(placeID);
             post.setPostID(UUID.randomUUID().toString());
             post.setDescription(description);
