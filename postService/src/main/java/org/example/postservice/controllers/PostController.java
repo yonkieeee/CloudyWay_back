@@ -2,6 +2,7 @@ package org.example.postservice.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.postservice.models.Coordinates;
 import org.example.postservice.repositories.PostRepo;
 import org.example.postservice.dto.RequestPost;
 import org.example.postservice.models.Post;
@@ -46,10 +47,10 @@ public class PostController {
                 return ResponseEntity.status(404).body("User does not exist");
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> coordinates = objectMapper.readValue(coordinatesJson, new TypeReference<>() {});
+            Coordinates coordinates = objectMapper.readValue(coordinatesJson, Coordinates.class);
 
-            String lat = coordinates.get("lat").toString();
-            String lon = coordinates.get("lng").toString();
+            String lat = String.valueOf(coordinates.getLat());
+            String lon = String.valueOf(coordinates.getLat())   ;
 
             boolean isUserInRadius = Boolean.TRUE.equals(restTemplate.getForObject("http://3.75.94.120:5001/places/isUserOnPlace?here_api_id="
                     + placeID + "&lat=" + lat + "&lon=" + lon, Boolean.class));
