@@ -12,7 +12,6 @@ public class DotEnvConfig {
     @PostConstruct
     public void setProperties() {
         System.setProperty("FIREBASE_CREDENTIALS", dotenv.get("FIREBASE_CREDENTIALS"));
-        System.setProperty("FIREBASE_URL", dotenv.get("FIREBASE_URL"));
         System.setProperty("MAIL_PASSWORD", dotenv.get("MAIL_PASSWORD"));
         System.setProperty("REDIS_HOST", dotenv.get("REDIS_HOST"));
         System.setProperty("REDIS_PASSWORD", dotenv.get("REDIS_PASSWORD"));

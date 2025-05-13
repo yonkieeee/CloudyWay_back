@@ -18,15 +18,11 @@ public class FireBaseConfig {
     @Value("${firebase.credentials}")
     private String firebaseCredentials;
 
-    @Value("${firebase.url}")
-    private String firebaseURL;
-
     @Bean
     public FirebaseApp initializeFirebase() throws IOException {
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(new ByteArrayInputStream(firebaseCredentials.getBytes())))
-                .setDatabaseUrl(firebaseURL)
                 .build();
 
         return FirebaseApp.initializeApp(options);
