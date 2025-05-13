@@ -50,13 +50,15 @@ public class PostController {
             Coordinates coordinates = objectMapper.readValue(coordinatesJson, Coordinates.class);
 
             String lat = String.valueOf(coordinates.getLat());
-            String lon = String.valueOf(coordinates.getLat())   ;
+            String lon = String.valueOf(coordinates.getLng());
 
             boolean isUserInRadius = Boolean.TRUE.equals(restTemplate.getForObject("http://3.75.94.120:5001/places/isUserOnPlace?here_api_id="
                     + placeID + "&lat=" + lat + "&lon=" + lon, Boolean.class));
 
+
+
             if(!isUserInRadius)
-                return ResponseEntity.status(403).body("User is not right place for making post");
+                return ResponseEntity.status(403).body("User is not right place for making post" + isUserInRadius + lat + lon);
 
             if(postRepo.existByPlaceId(uid, placeID))
                 return ResponseEntity.status(409).body("Post with this place already exists");
