@@ -56,6 +56,16 @@ public class PostRepo {
         return Optional.ofNullable(snapshot.toObject(Post.class));
     }
 
+    public boolean existByPlaceId(String uid, String placeId) throws ExecutionException, InterruptedException {
+        CollectionReference collectionReference = firestore.collection("users").document(uid).collection("posts");
+
+        ApiFuture<QuerySnapshot> query = collectionReference.whereEqualTo("placeId", placeId).get();
+
+        List<QueryDocumentSnapshot> documents = query.get().getDocuments();
+
+        return !documents.isEmpty();
+    }
+
     public void changePost(String uid, Post post) throws ExecutionException, InterruptedException {
         CollectionReference postsRef = firestore.collection("users").document(uid).collection("posts");
         postsRef.document(post.getPostID()).set(post).get();
