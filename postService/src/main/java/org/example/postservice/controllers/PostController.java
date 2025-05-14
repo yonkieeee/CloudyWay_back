@@ -6,6 +6,7 @@ import org.example.postservice.models.Coordinates;
 import org.example.postservice.repositories.PostRepo;
 import org.example.postservice.dto.RequestPost;
 import org.example.postservice.models.Post;
+import org.example.postservice.repositories.VisitedRegionsRepo;
 import org.example.postservice.services.S3Service;
 import org.example.postservice.services.UserChangesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class PostController {
 
     @Autowired
     private UserChangesService userChangesService;
+
+    @Autowired
+    private VisitedRegionsRepo visitedRegionsRepo;
 
     @Autowired
     public PostController(S3Service s3Service, PostRepo postRepo) {
@@ -55,8 +59,6 @@ public class PostController {
             boolean isUserInRadius = Boolean.TRUE.equals(restTemplate.getForObject("http://3.75.94.120:5001/places/isUserOnPlace?here_api_id="
                     + placeID + "&lat=" + lat + "&lon=" + lon, Boolean.class));
 
-
-
             if(!isUserInRadius)
                 return ResponseEntity.status(403).body("User is not right place for making post" + isUserInRadius + lat + lon);
 
@@ -79,6 +81,16 @@ public class PostController {
 
             postRepo.addPost(uid, post);
             userChangesService.addPost(uid);
+            var regionData = restTemplate.getForObject("http://3.75.94.120:5001/counties/getCounty?here_api_id="
+                    + placeID, Map.class);
+
+            if(regionData == null)
+                return ResponseEntity.status(403).body("some trouble");
+
+            if(!visitedRegionsRepo.existsRegion(uid, regionData.get("county").toString()))
+                visitedRegionsRepo.addRegionIfNotExists(uid, regionData.get("county").toString());
+
+            visitedRegionsRepo.changeRegion(uid, regionData.get("county").toString(), Integer.parseInt(regionData.get("quantity").toString()));
 
             return ResponseEntity.ok().body(putPhoto);
 
