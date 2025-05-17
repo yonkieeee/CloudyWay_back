@@ -1,10 +1,8 @@
 package org.example.postservice.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.postservice.models.Coordinates;
 import org.example.postservice.repositories.PostRepo;
-import org.example.postservice.dto.RequestPost;
 import org.example.postservice.models.Post;
 import org.example.postservice.repositories.VisitedRegionsRepo;
 import org.example.postservice.services.S3Service;
@@ -17,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.rmi.server.UID;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -79,8 +78,7 @@ public class PostController {
             post.setPostID(UUID.randomUUID().toString());
             post.setDescription(description);
 
-            postRepo.addPost(uid, post);
-            userChangesService.addPost(uid);
+
             var regionData = restTemplate.getForObject("http://3.75.94.120:5001/counties/getCounty?here_api_id="
                     + placeID, Map.class);
 
@@ -91,6 +89,12 @@ public class PostController {
                 visitedRegionsRepo.addRegionIfNotExists(uid, regionData.get("county").toString());
 
             visitedRegionsRepo.changeRegion(uid, regionData.get("county").toString(), Integer.parseInt(regionData.get("quantity").toString()));
+
+            post.setRegion(regionData.get("county").toString());
+            post.setDate(LocalDate.now().toString());
+
+            postRepo.addPost(uid, post);
+            userChangesService.addPost(uid);
 
             return ResponseEntity.ok().body(putPhoto);
 

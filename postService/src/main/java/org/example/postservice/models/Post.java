@@ -15,6 +15,8 @@ public class Post {
 
     private String placeId;
     private String imageUrl;
+    private String region;
+    private String date;
     private String description;
 
     @Builder.Default
