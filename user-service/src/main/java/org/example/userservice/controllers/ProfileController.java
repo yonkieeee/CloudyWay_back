@@ -1,6 +1,7 @@
 package org.example.userservice.controllers;
 
 import org.example.userservice.dto.RequestProfileImage;
+import org.example.userservice.dto.UserResponseDto;
 import org.example.userservice.models.User;
 import org.example.userservice.repositories.UserRepository;
 import org.example.userservice.services.S3Service;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -62,6 +64,20 @@ public class ProfileController {
         }
         return null;
     }
+
+    @GetMapping("/get-by-username")
+    public ResponseEntity<?> getUserByUsername(@RequestParam(value="username") String username) {
+        try{
+            List<User> users = userRepository.searchByUsernameFragment(username);
+            List<UserResponseDto> response = users.stream()
+                    .map(user -> new UserResponseDto(user.getUid(), user.getUsername(), user.getProfileImageUrl()))
+                    .toList();
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PutMapping("/change")
     public ResponseEntity<?> changeUser(@RequestParam(value="uid") String uid,

@@ -6,6 +6,8 @@ import com.google.cloud.firestore.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -48,6 +50,24 @@ public class UserRepository{
         }
         return Optional.empty();
     }
+
+    public List<User> searchByUsernameFragment(String fragment)
+            throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = usersCollection.get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<User> matchedUsers = new ArrayList<>();
+
+        for (QueryDocumentSnapshot doc : documents) {
+            User user = doc.toObject(User.class);
+            if (user.getUsername() != null &&
+                    user.getUsername().toLowerCase().contains(fragment.toLowerCase())) {
+                matchedUsers.add(user);
+            }
+        }
+
+        return matchedUsers;
+    }
+
 
     public Boolean existById(String uid)
             throws ExecutionException, InterruptedException {
